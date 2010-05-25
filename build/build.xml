@@ -1,0 +1,32 @@
+<project name="jsgeom" default="dist" basedir="../">
+    <description>
+        JSGeom build file
+    </description>
+    <!-- set global properties for this build -->
+    <property name="src"      location="src"/>
+    <property name="build"    location="build"/>
+    <property name="dist"     location="dist"/>
+    <property name="work"     location="work" />
+    
+    <taskdef name="jslint"
+           classname="com.googlecode.jslint4java.ant.JSLintTask"
+           classpath="${build}/lib/jslint4java/jslint4java-1.3.3.jar" />
+    
+    <target name="clean" description="clean up" >
+        <delete dir="${work}"/>
+        <delete dir="${dist}"/>
+    </target>
+    
+    <target name="lint">
+        <echo level="info" message="Applying JSLint on JavaScript files" />
+        <jslint options="undef,white">
+            <predef>jQuery,$$</predef>
+            <formatter type="plain" />
+            <formatter type="xml" destfile="${build}/jslint.xml" />
+            <fileset dir="${src}" includes="**/*.js" excludes="**/*.pack.js" />
+        </jslint>
+    </target>
+    
+    <target name="dist" depends="lint" />
+        
+</project>
